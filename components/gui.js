@@ -1,3 +1,28 @@
+class GUI {
+  constructor(initial_config) {
+    this.folders = []
+    this.gui = new dat.GUI()
+  }
+
+  add_category(name, obj) {
+    let folder = this.gui.addFolder(name)
+    this.folders.push({ name, elem: folder })
+
+    for (let prop in obj) {
+      folder.add(obj, prop, -20, 20, 0.3)
+    }
+  }
+
+  remove_category(name) {
+    let folder = this.folders.find(elem => elem.name === name)
+
+    if (!folder) throw 'Categoria não encontrada'
+
+    this.gui.removeFolder(folder.elem)
+    this.folders.filter(elem => elem.name !== name)
+  }
+}
+
 let config = {
   rotateX: degToRad(0),
   rotateY: degToRad(0),
@@ -8,11 +33,4 @@ let config = {
   scaleX: 1,
   scaleY: 1,
   scaleZ: 1
-}
-
-const loadGUI = () => {
-  const gui = new dat.GUI()
-  for (let prop in config) {
-    gui.add(config, prop, -20, 20, 0.3)
-  }
 }

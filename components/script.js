@@ -1,18 +1,21 @@
 function main() {
   const { gl, meshProgramInfo } = initializeWorld()
 
+  //Cube
+
   const cubeBufferInfo = flattenedPrimitives.createCubeBufferInfo(gl, 20)
 
   const cubeVAO = twgl.createVAOFromBufferInfo(gl, meshProgramInfo, cubeBufferInfo)
-
-  var fieldOfViewRadians = degToRad(60)
 
   const cubeUniforms = {
     u_colorMult: [1, 0.5, 0.5, 1],
     u_matrix: m4.identity()
   }
 
-  loadGUI()
+  var fieldOfViewRadians = degToRad(60)
+
+  let gui = new GUI()
+  gui.add_category('Cubo', config)
 
   function render() {
     twgl.resizeCanvasToDisplaySize(gl.canvas)
@@ -57,6 +60,7 @@ function main() {
     twgl.setUniforms(meshProgramInfo, cubeUniforms)
 
     twgl.drawBufferInfo(gl, cubeBufferInfo)
+
     requestAnimationFrame(render)
   }
 
