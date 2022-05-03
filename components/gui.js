@@ -1,5 +1,5 @@
 class GUI {
-  constructor(initial_config) {
+  constructor() {
     this.folders = []
     this.gui = new dat.GUI()
   }
