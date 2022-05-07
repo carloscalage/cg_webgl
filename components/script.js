@@ -12,7 +12,15 @@ function main() {
 
   let gui = new GUI()
 
-  let cube = new Polygon(gl, programInfo, gui)
+  let polygons = []
+
+  let onClick = {
+    'New Polygon': () => {
+      polygons.push(new Polygon(gl, programInfo, gui))
+    }
+  }
+
+  gui.add_button(false, onClick, 'New Polygon')
 
   requestAnimationFrame(drawScene)
 
@@ -48,7 +56,9 @@ function main() {
 
     gl.useProgram(programInfo.program)
 
-    cube.draw(time, viewProjectionMatrix)
+    polygons.forEach(elem => {
+      elem.draw(time, viewProjectionMatrix)
+    })
 
     requestAnimationFrame(drawScene)
   }
