@@ -37,9 +37,12 @@ class GUI {
   }
 
   add_button(folder_name, obj, property_name) {
-    let folder = this.get_folder(folder_name).elem
-    folder.add(obj, property_name)
-
-    return folder
+    if (folder_name) {
+      let folder = this.get_folder(folder_name).elem
+      folder.add(obj, property_name)
+      return folder
+    } else {
+      this.gui.add(obj, property_name)
+    }
   }
 }
