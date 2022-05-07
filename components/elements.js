@@ -28,7 +28,7 @@ class Cube {
   }
 
   add_controller() {
-    this.gui.add_category(String(Math.random() * 10), this.transformations)
+    this.gui.add_category(Math.random() * 10, this.transformations)
   }
 
   draw(time, viewProjectionMatrix) {
