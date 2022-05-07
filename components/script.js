@@ -12,7 +12,7 @@ function main() {
 
   let gui = new GUI()
 
-  let cube = new Cube(gl, programInfo, gui)
+  let cube = new Polygon(gl, programInfo, gui)
 
   requestAnimationFrame(drawScene)
 
