@@ -25,4 +25,9 @@ class GUI {
     this.gui.removeFolder(folder.elem)
     this.folders.filter(elem => elem.name !== name)
   }
+
+  add_button(folder_name, obj, property_name) {
+    let folder = this.get_folder(folder_name)
+    folder.elem.add(obj, property_name)
+  }
 }
