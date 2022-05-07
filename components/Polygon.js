@@ -2,9 +2,19 @@ class Polygon {
   constructor(gl, programInfo, gui) {
     this.gl = gl
     this.programInfo = programInfo
+
+    //Gui Variables
     this.gui = gui
     this.id = Math.random() * 10
     this.animate = false
+    this.animation_button = {
+      animate: () => {
+        this.animation_handler()
+      }
+    }
+    this.animation_config = {
+      speed: 1.2
+    }
 
     this.bufferInfo = flattenedPrimitives.createCubeBufferInfo(gl, 20)
     this.VAO = twgl.createVAOFromBufferInfo(gl, programInfo, this.bufferInfo)
@@ -29,25 +39,39 @@ class Polygon {
     this.add_controller()
   }
 
-  add_controller() {
-    this.gui.add_category(this.id, this.transformations)
-  }
+  animation_handler() {
+    this.animate = !this.animate
 
-  reset_transformation() {
-    this.transformations = {
-      rotationX: 0,
-      rotationY: 0,
-      rotationZ: 0,
-      translationX: 0,
-      translationY: 0,
-      translationZ: 0,
-      scaleX: 1,
-      scaleY: 1,
-      scaleZ: 1
+    if (this.animate) {
+      this.gui.remove_category(this.id)
+      this.gui.add_category(this.id)
+      this.gui.add_element(this.id, this.animation_config)
+      this.gui.add_button(this.id, this.animation_button, 'animate').open()
+    }
+
+    if (!this.animate) {
+      this.gui.remove_category(this.id)
+      this.gui.add_category(this.id)
+      this.gui.add_element(this.id, this.transformations)
+      this.gui.add_button(this.id, this.animation_button, 'animate').open()
     }
   }
 
+  add_controller() {
+    this.gui.add_category(this.id)
+    this.gui.add_element(this.id, this.transformations)
+
+    this.gui.add_button(this.id, this.animation_button, 'animate')
+  }
+
   draw(time, viewProjectionMatrix) {
+    if (this.animate) {
+      this.transformations = {
+        ...this.transformations,
+        rotationX: time * this.animation_config.speed
+      }
+    }
+
     // Setup all the needed attributes.
     this.gl.bindVertexArray(this.VAO)
 
