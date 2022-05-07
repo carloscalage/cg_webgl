@@ -1,29 +1,34 @@
 function main() {
   const { gl, meshProgramInfo } = initializeWorld()
 
-  //Cube
+  // Tell the twgl to match position with a_position, n
+  // normal with a_normal etc..
+  twgl.setAttributePrefix('a_')
 
-  const cubeBufferInfo = flattenedPrimitives.createCubeBufferInfo(gl, 20)
-
-  const cubeVAO = twgl.createVAOFromBufferInfo(gl, meshProgramInfo, cubeBufferInfo)
-
-  const cubeUniforms = {
-    u_colorMult: [1, 0.5, 0.5, 1],
-    u_matrix: m4.identity()
-  }
+  // setup GLSL program
+  var programInfo = twgl.createProgramInfo(gl, [vs, fs])
 
   var fieldOfViewRadians = degToRad(60)
 
   let gui = new GUI()
-  gui.add_category('Cubo', config)
 
-  function render() {
+  let cube = new Cube(gl, programInfo, gui)
+
+  requestAnimationFrame(drawScene)
+
+  // Draw the scene.
+  function drawScene(time) {
+    time = time * 0.0005
+
     twgl.resizeCanvasToDisplaySize(gl.canvas)
 
+    // Tell WebGL how to convert from clip space to pixels
     gl.viewport(0, 0, gl.canvas.width, gl.canvas.height)
-    gl.enable(gl.DEPTH_TEST)
-    gl.enable(gl.CULL_FACE)
 
+    gl.enable(gl.CULL_FACE)
+    gl.enable(gl.DEPTH_TEST)
+
+    // Compute the projection matrix
     var aspect = gl.canvas.clientWidth / gl.canvas.clientHeight
     var projectionMatrix = m4.perspective(fieldOfViewRadians, aspect, 1, 2000)
 
@@ -38,33 +43,15 @@ function main() {
 
     var viewProjectionMatrix = m4.multiply(projectionMatrix, viewMatrix)
 
-    gl.useProgram(meshProgramInfo.program)
+    var coneXRotation = time
+    var coneYRotation = -time
 
-    // ------ Draw the cube --------
+    gl.useProgram(programInfo.program)
 
-    // Setup all the needed attributes.
-    gl.bindVertexArray(cubeVAO)
+    cube.draw(time, viewProjectionMatrix)
 
-    rotateConfig = [config.rotateX, config.rotateY, config.rotateZ]
-    translateConfig = [config.translateX, config.translateY, config.translateZ]
-    scaleConfig = [config.scaleX, config.scaleY, config.scaleZ]
-
-    cubeUniforms.u_matrix = computeMatrix(
-      viewProjectionMatrix,
-      rotateConfig,
-      translateConfig,
-      scaleConfig
-    )
-
-    // Set the uniforms we just computed
-    twgl.setUniforms(meshProgramInfo, cubeUniforms)
-
-    twgl.drawBufferInfo(gl, cubeBufferInfo)
-
-    requestAnimationFrame(render)
+    requestAnimationFrame(drawScene)
   }
-
-  requestAnimationFrame(render)
 }
 
 main()
