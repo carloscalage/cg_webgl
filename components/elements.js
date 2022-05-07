@@ -27,6 +27,10 @@ class Cube {
     this.add_controller()
   }
 
+  add_controller() {
+    this.gui.add_category(String(Math.random() * 10), this.transformations)
+  }
+
   draw(time, viewProjectionMatrix) {
     // Setup all the needed attributes.
     this.gl.bindVertexArray(this.cubeVAO)

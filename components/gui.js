@@ -4,12 +4,12 @@ class GUI {
     this.gui = new dat.GUI()
   }
 
-  add_category(name, obj) {
+  add_category(name, config) {
     let folder = this.gui.addFolder(name)
     this.folders.push({ name, elem: folder })
 
-    for (let prop in obj) {
-      folder.add(obj, prop, -20, 20, 0.3)
+    for (let prop in config) {
+      folder.add(config, prop, -20, 20, 0.3)
     }
   }
 
@@ -21,16 +21,4 @@ class GUI {
     this.gui.removeFolder(folder.elem)
     this.folders.filter(elem => elem.name !== name)
   }
-}
-
-let config = {
-  rotateX: degToRad(0),
-  rotateY: degToRad(0),
-  rotateZ: degToRad(0),
-  translateX: degToRad(0),
-  translateY: degToRad(0),
-  translateZ: degToRad(0),
-  scaleX: 1,
-  scaleY: 1,
-  scaleZ: 1
 }
