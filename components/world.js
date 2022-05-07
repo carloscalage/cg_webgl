@@ -5,7 +5,7 @@ const initializeWorld = () => {
     return
   }
   twgl.setAttributePrefix('a_')
-  const meshProgramInfo = twgl.createProgramInfo(gl, [vertexShaderSource, fragmentShaderSource])
+  const meshProgramInfo = twgl.createProgramInfo(gl, [vs, fs])
 
   return {
     gl,

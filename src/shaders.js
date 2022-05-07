@@ -1,4 +1,4 @@
-const vertexShaderSource = `#version 300 es
+const vs = `#version 300 es
 
   in vec4 a_position;
   in vec4 a_color;
@@ -14,7 +14,7 @@ const vertexShaderSource = `#version 300 es
   }
 `
 
-const fragmentShaderSource = `#version 300 es
+const fs = `#version 300 es
 precision highp float;
 
 in vec4 v_color;
