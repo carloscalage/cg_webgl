@@ -35,7 +35,7 @@ class Cube {
     // Setup all the needed attributes.
     this.gl.bindVertexArray(this.cubeVAO)
 
-    this.cubeUniforms.u_matrix = computeMatrixA(viewProjectionMatrix, this.transformations)
+    this.cubeUniforms.u_matrix = computeMatrix(viewProjectionMatrix, this.transformations)
 
     // Set the uniforms we just computed
     twgl.setUniforms(this.programInfo, this.cubeUniforms)
