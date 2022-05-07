@@ -4,6 +4,10 @@ class GUI {
     this.gui = new dat.GUI()
   }
 
+  get_folder(name) {
+    return this.folders.find(elem => elem.name === name)
+  }
+
   add_category(name, config) {
     let folder = this.gui.addFolder(name)
     this.folders.push({ name, elem: folder })
@@ -14,7 +18,7 @@ class GUI {
   }
 
   remove_category(name) {
-    let folder = this.folders.find(elem => elem.name === name)
+    let folder = this.get_folder(name)
 
     if (!folder) throw 'Categoria não encontrada'
 
