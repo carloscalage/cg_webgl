@@ -112,20 +112,6 @@ class Polygon {
     }
   }
 
-  reset_transformations() {
-    this.transformations = {
-      rotationX: 0,
-      rotationY: 0,
-      rotationZ: 0,
-      translationX: 0,
-      translationY: 0,
-      translationZ: 0,
-      scaleX: 1,
-      scaleY: 1,
-      scaleZ: 1
-    }
-  }
-
   add_controller() {
     this.gui.new_category(this.id)
 
