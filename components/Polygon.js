@@ -87,7 +87,7 @@ class Polygon {
     if (this.set_animation) {
       this.gui.remove_category(this.id)
       this.gui.new_category(this.id)
-      this.gui.add_element_to_category(this.id, this.animation_button, 'speed', [0, 0.5, 0.1])
+      this.gui.add_element_to_category(this.id, this.animation_button, 'speed', [0.1, 0.5, 0.1])
 
       this.gui.add_element_to_category(this.id, this.animation_button, 'rotationX', false)
       this.gui.add_element_to_category(this.id, this.animation_button, 'rotationY', false)
