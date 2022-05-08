@@ -25,15 +25,18 @@ class GUI {
   }
 
   add_element(name, config) {
-    console.log(this.get_folder(name))
-
     let folder = this.get_folder(name).elem
 
     for (let prop in config) {
-      folder.add(config, prop, -20, 20, 0.1).onChange(elem => console.log(elem))
+      folder.add(config, prop, -200, 200, 0.1)
     }
 
     return folder
+  }
+
+  custom_element(name, config, property_name, values) {
+    let folder = this.get_folder(name).elem
+    folder.add(config, property_name, values[0], values[1], property_name[2])
   }
 
   add_button(folder_name, obj, property_name) {
