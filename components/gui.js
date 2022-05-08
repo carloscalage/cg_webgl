@@ -8,7 +8,7 @@ class GUI {
     return this.folders.find(elem => elem.name === name)
   }
 
-  add_category(name) {
+  new_category(name) {
     let folder = this.gui.addFolder(name)
     this.folders.push({ name, elem: folder })
 
@@ -24,28 +24,19 @@ class GUI {
     this.folders = this.folders.filter(elem => elem.name !== name)
   }
 
-  add_element(name, config) {
-    let folder = this.get_folder(name).elem
+  add_element(obj, property_name, values) {
+    values
+      ? this.gui.add(obj, property_name, values[0], values[1], property_name[2])
+      : this.gui.add(obj, property_name)
+  }
 
-    for (let prop in config) {
-      folder.add(config, prop, -200, 200, 0.1)
-    }
+  add_element_to_category(category, obj, property_name, values) {
+    let folder = this.get_folder(category).elem
+
+    values
+      ? folder.add(obj, property_name, values[0], values[1], property_name[2])
+      : folder.add(obj, property_name)
 
     return folder
-  }
-
-  custom_element(name, config, property_name, values) {
-    let folder = this.get_folder(name).elem
-    folder.add(config, property_name, values[0], values[1], property_name[2])
-  }
-
-  add_button(folder_name, obj, property_name) {
-    if (folder_name) {
-      let folder = this.get_folder(folder_name).elem
-      folder.add(obj, property_name)
-      return folder
-    } else {
-      this.gui.add(obj, property_name)
-    }
   }
 }

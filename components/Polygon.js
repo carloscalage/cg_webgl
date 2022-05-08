@@ -2,30 +2,32 @@ class Polygon {
   constructor(gl, programInfo, gui) {
     this.gl = gl
     this.programInfo = programInfo
+    this.bufferInfo = flattenedPrimitives.createCubeBufferInfo(gl, 20)
+    this.VAO = twgl.createVAOFromBufferInfo(gl, programInfo, this.bufferInfo)
+
+    this.time_0 = 0
 
     //Gui Variables
     this.gui = gui
     this.id = Math.random() * 10
+
     this.animate = false
     this.animation_button = {
-      animate: () => {
+      toggle_rotation: () => {
         this.animation_handler()
       }
     }
     this.animation_config = {
-      speed: 1.2
+      speed: 0.1
     }
 
-    this.bufferInfo = flattenedPrimitives.createCubeBufferInfo(gl, 20)
-    this.VAO = twgl.createVAOFromBufferInfo(gl, programInfo, this.bufferInfo)
-
     this.transformations = {
-      rotationX: degToRad(0),
-      rotationY: degToRad(0),
-      rotationZ: degToRad(0),
-      translationX: degToRad(0),
-      translationY: degToRad(0),
-      translationZ: degToRad(0),
+      rotationX: 0,
+      rotationY: 0,
+      rotationZ: 0,
+      translationX: 0,
+      translationY: 0,
+      translationZ: 0,
       scaleX: 1,
       scaleY: 1,
       scaleZ: 1
@@ -44,24 +46,49 @@ class Polygon {
 
     if (this.animate) {
       this.gui.remove_category(this.id)
-      this.gui.add_category(this.id)
-      this.gui.add_element(this.id, this.animation_config)
-      this.gui.add_button(this.id, this.animation_button, 'animate').open()
+      this.gui.new_category(this.id)
+      this.gui.add_element_to_category(this.id, this.animation_config, 'speed', [0, 0.05, 0.01])
+      this.gui.add_element_to_category(this.id, this.animation_button, 'toggle_rotation', false)
     }
 
     if (!this.animate) {
       this.gui.remove_category(this.id)
-      this.gui.add_category(this.id)
-      this.gui.add_element(this.id, this.transformations)
-      this.gui.add_button(this.id, this.animation_button, 'animate').open()
+
+      this.add_controller()
     }
   }
 
   add_controller() {
-    this.gui.add_category(this.id)
-    this.gui.add_element(this.id, this.transformations)
+    this.gui.new_category(this.id)
 
-    this.gui.add_button(this.id, this.animation_button, 'animate')
+    this.gui.add_element_to_category(this.id, this.transformations, 'rotationX', [0, 10, 0.1])
+    this.gui.add_element_to_category(this.id, this.transformations, 'rotationY', [0, 10, 0.1])
+    this.gui.add_element_to_category(this.id, this.transformations, 'rotationZ', [0, 10, 0.1])
+
+    this.gui.add_element_to_category(
+      this.id,
+      this.transformations,
+      'translationX',
+      [-100, 100, 0.1]
+    )
+    this.gui.add_element_to_category(
+      this.id,
+      this.transformations,
+      'translationY',
+      [-100, 100, 0.1]
+    )
+    this.gui.add_element_to_category(
+      this.id,
+      this.transformations,
+      'translationZ',
+      [-100, 100, 0.1]
+    )
+
+    this.gui.add_element_to_category(this.id, this.transformations, 'scaleX', [1, 10, 0.1])
+    this.gui.add_element_to_category(this.id, this.transformations, 'scaleY', [1, 10, 0.1])
+    this.gui.add_element_to_category(this.id, this.transformations, 'scaleZ', [1, 10, 0.1])
+
+    this.gui.add_element_to_category(this.id, this.animation_button, 'toggle_rotation', false)
   }
 
   draw(time, viewProjectionMatrix) {
