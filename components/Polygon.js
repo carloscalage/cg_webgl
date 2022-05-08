@@ -1,5 +1,5 @@
 class Polygon {
-  constructor(gl, programInfo, gui) {
+  constructor(gl, programInfo, gui, id, remove_polygon) {
     this.gl = gl
     this.programInfo = programInfo
     this.bufferInfo = flattenedPrimitives.createCubeBufferInfo(gl, 20)
@@ -9,7 +9,15 @@ class Polygon {
 
     //Gui Variables
     this.gui = gui
-    this.id = Math.random() * 10
+    this.id = id
+
+    this.remove_polygon = remove_polygon
+    this.remove_button = {
+      remove: () => {
+        this.gui.remove_category(this.id)
+        this.remove_polygon(this.id)
+      }
+    }
 
     this.animate = false
     this.animation_button = {
@@ -89,22 +97,14 @@ class Polygon {
     this.gui.add_element_to_category(this.id, this.transformations, 'scaleZ', [1, 10, 0.1])
 
     this.gui.add_element_to_category(this.id, this.animation_button, 'toggle_rotation', false)
+    this.gui.add_element_to_category(this.id, this.remove_button, 'remove', false)
   }
 
   draw(time, viewProjectionMatrix) {
-    if (this.animate) {
-      this.transformations = {
-        ...this.transformations,
-        rotationX: time * this.animation_config.speed
-      }
-    }
-
-    // Setup all the needed attributes.
     this.gl.bindVertexArray(this.VAO)
 
     this.uniforms.u_matrix = computeMatrix(viewProjectionMatrix, this.transformations)
 
-    // Set the uniforms we just computed
     twgl.setUniforms(this.programInfo, this.uniforms)
 
     twgl.drawBufferInfo(this.gl, this.bufferInfo)
