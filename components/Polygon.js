@@ -147,6 +147,7 @@ class Polygon {
   }
 
   draw(time, viewProjectionMatrix) {
+    // if animation is true
     if (this.start_animation) {
       let current = Date.now()
       let elapsed = current - this.t0
@@ -155,12 +156,16 @@ class Polygon {
       this.lag += elapsed
 
       if (this.lag >= this.frame_duration) {
+        // checks if there's any animation to do
         if (this.animations.length) {
+          // checks if the animation is not complete yet
           if (this.transformations[this.animations[0].name] <= this.animations[0].to) {
             this.transformations[this.animations[0].name] += this.animation_button.speed
+            // if completed, removes it from array and set another one to start
           } else {
             this.animations.shift()
 
+            // checks if it hasn't done all the animations
             if (this.animations.length)
               this.transformations[this.animations[0].name] = this.animations[0].from
           }
